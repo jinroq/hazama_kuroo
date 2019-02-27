@@ -2,5 +2,8 @@ require "hazama_kuroo/version"
 
 module HazamaKuroo
   class Error < StandardError; end
-  # Your code goes here...
+
+  def self.greet
+    puts("I am HAZAMA Kuroo.")
+  end
 end

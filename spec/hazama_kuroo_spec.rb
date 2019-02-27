@@ -3,7 +3,7 @@ RSpec.describe HazamaKuroo do
     expect(HazamaKuroo::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "greet test" do
+    expect(HazamaKuroo.greet).to be nil
   end
 end
