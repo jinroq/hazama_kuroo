@@ -4,144 +4,34 @@ require "hazama_kuroo/version"
 module HazamaKuroo
   # 実行メソッド
   def self.run
-    cs = gen
-    puts 'Game Start'
-    hk = dft cs
-    puts "HZM: #{hk[0][0]} ***"
-    yu = dft cs
-    puts "YOU: #{yu[0][0]} #{yu[1][0]}"
-    ooe yu[0]
-    sio yu[0]
-    ooe yu[1]
-    sio yu[1]
 
-    f = 1
-    while f do
-      print 'Hit? [y/n] '
-      while s = gets do
-        case s.chomp
-        when 'y'
-          yu << (deal cs)
-          puts "YOU: #{yu[-1][0]}"
-          ooe yu[-1]
-          sio yu[-1]
-          (puts 'Lose'; f = false) if 21 < (sum yu)
-        when 'n'
-          std yu, hk, cs
-          f = false
-        else
-          puts ope
-          exit
-        end
-        break
-      end
-    end
-  end
+    eval$s=%w!c=[];52.times{|i|j=i%13;k=case(j)when(0);"A"when(
+    10);"J"when(11);"Q"w hen(12);"K"else;j+1; end;case(i)when(0
+    . .9);c[i]=["S- #{k} ",k]when(10.     .12 );c[i]=["S-"+k,10
+    ] when(13..22); c[i] =["C-#{k}",k ]wh  en (23..25);c[i]=["C
+    - "+k,10]    w    he n(2   6..35) ;c[i ]= ["H-   #{  k}" ,k
+    ] when(3  6. .3 8);c[i] =["H-"+k, 10]  wh en( 39. .4 8); c[
+    i ]=["D- #{k  } ",k]els e;c[i]=[     "D-" +k,10]; en d} ;pu
+    t s"Game      \ sStart";  d=[];4. times{d << c    .de l ete
+    _ at(ran d(c.le ngth))};pu ts"HZM :\s#{d[ 0][ 0]} \s*   **"
+    ; puts"Y  OU:\s #{d[2][ 0] }\s#{d [3][0]} ";2 .t  ime  s{|i
+    |     j=d    [i   +2][0   ];k=d[i +2][1]; if('    A'== k);p
+    uts"#{j}?\s[1/11]\s";s=gets;case(s.chomp)when('1');d[ i+2][
+    1]=1when('11');d[i+2][1]=11;else;puts"Failed\sThe\sO  ps.";
+    exit;end;end};f=1;z=d[2][1]+d[3][1];while(f)do;puts"Hit?\s[
+    y/n]\s";wh ile(s=gets)do;cas e(s.chomp)when('y');x=c. delet
+    e     _at( rand(c.length));p uts"YOU:\s#{x[0]}";if('A '==x[
+    1 ]);  put s"#{x[0]}?\s[1/11 ]\s";s=gets;case(s.chomp )when
+    ( '1') ;z+ =1;w   hen(    '1 1'  ); z+=1   1;el    se ;p  u
+    t s"F  ail ed\ sTh e\  sO ps .  ";e xit ;en d;  el se ;  z+
+    =     x[1] ;end;if (2 1<z);p u ts"L ose";f= fa lse;en d ;wh
+    e n('  n') ;f=f    al se;put   s"Ho le\s    Ca rd:\s#   {d[
+    1 ][0] }"; (d[ 0][ 1] =11)if (  'A' ==d [0] [1 ]);y=d [  0]
+    [ 1]+  ('A '== d[  1]  [1]?( 11 ==d [0] [1  ]?  1: 11 ): d[
+    1     ][1] );wh    ile    (y <17 )d o;t=    c.d    el ete _
+    at(rand(c.length));puts"HZM:\s#{t[0 ]}";y+=('A'==t[1]?(y<10
+    ?11:1):t[1]);end;((21<y||y<z)?(put s"Win"):((z<y)?(puts"Los
+    e"):(puts"Draw")));else;puts"X(";exit;end;break;end;end!*""
 
-  # カードを 52 枚用意する
-  def self.gen
-    ms = %w[S C H D]
-    c = []
-    ms.each do |m|
-      ns = []
-      [*1..13].each do |n|
-        case n
-        when 1
-          ns << ([] << "#{m}-A" << 'A' << 0 << 0)
-        when 11
-          ns << ([] << "#{m}-J" << 10 << 0)
-        when 12
-          ns << ([] << "#{m}-Q" << 10 << 0)
-        when 13
-          ns << ([] << "#{m}-K" << 10 << 0)
-        else
-          ns << ([] << "#{m}-#{n}" << n << 0)
-        end
-      end
-      c << ns
-    end
-    c
-  end
-
-  # 初期デッキを作る
-  def self.dft cs
-    [] << (deal cs) << (deal cs)
-  end
-
-  # カードを配る
-  def self.deal cs
-    while 1 do
-      m = rand(4)
-      n = rand(11)
-      (cs[m][n][2] = 1; break) if 0 == cs[m][n][2]
-    end
-    cs[m][n]
-  end
-
-  # Ace をどうするか
-  def self.ooe a
-    if 'A' == a[1] && 0 == a[3]
-
-      print "#{a[0]}? [1/11] "
-      s = gets
-      case s.chomp
-      when '1'
-        a[1] = 1
-      when '11'
-        a[1] = 11
-      else
-        a[1] = nil
-      end
-      a[3] = 1
-    end
-  end
-
-  # 不正操作だったら強制終了
-  def self.sio c
-    if c[1].nil?
-      puts ope
-      exit
-    end
-  end
-
-  # 勝負する
-  def self.std y, d, cs
-    a = sum y
-    puts "Hole Card: #{d[1][0]}"
-    b = dbd d, cs, a
-    if 21 < b || b < a
-      puts 'Win!'
-    elsif a < b
-      puts 'Lose'
-    else
-      puts 'Draw'
-    end
-  end
-
-  # 合計
-  def self.sum a
-    s = 0
-    a.each do |b|
-      s += b[1]
-    end
-    s
-  end
-
-  # stand 後のディーラーの作業
-  def self.dbd d, cs, a
-    d[0][1] = 11 if 'A' == d[0][1]
-    s = d[0][1] + ('A' == d[1][1] ? (11 == d[0][1] ? 1 : 11) : d[1][1])
-
-    while s < 17 || s <= a do
-      t = deal cs
-      puts "HZM: #{t[0]}"
-      s += ('A' == t[1] ? (s < 10 ? 11 : 1) : t[1])
-    end
-    s
-  end
-
-  # 不正操作
-  def self.ope
-    'Failed The Ops.'
   end
 end
